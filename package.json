@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsx src/04-chatbot.ts",
+    "start": "npx tsx src/05-tools.ts",
     "test": "node --import tsx --test src/__tests__/**/*.test.ts"
   },
   "keywords": [],

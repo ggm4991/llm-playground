@@ -107,7 +107,7 @@ async function main() {
 
   // Primera llamada: el modelo responde con tool_calls en lugar de texto
   const firstResponse = await client.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
     messages,
     tools,
     tool_choice: 'auto' // el modelo decide si usar herramientas o no
@@ -149,7 +149,7 @@ async function main() {
 
   // Segunda llamada: el modelo ya tiene los resultados y genera texto
   const finalResponse = await client.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
     messages,
     tools
   });

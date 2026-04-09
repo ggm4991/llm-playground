@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx tsx src/04-chatbot.ts",
-    "test": "node --import tsx/esm --test src/__tests__/**/*.test.ts"
+    "test": "node --import tsx --test src/__tests__/**/*.test.ts"
   },
   "keywords": [],
   "author": "",

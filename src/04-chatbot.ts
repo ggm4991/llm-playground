@@ -147,4 +147,8 @@ async function main() {
   askQuestion();
 }
 
-main();
+// Solo ejecutar si este archivo es el punto de entrada directo
+const isMain = process.argv[1]?.endsWith('04-chatbot.ts') || process.argv[1]?.endsWith('04-chatbot.js');
+if (isMain) {
+  main();
+}

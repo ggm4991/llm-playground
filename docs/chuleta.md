@@ -150,3 +150,61 @@ Y ojo: una variable del `.env` **no existe en la terminal**. La lee dotenv al ar
 ### Pendiente
 
 Sacar el identificador del modelo del código y meterlo en el `.env`. Cuando el proveedor retire un modelo, cambias configuración en vez de código.
+
+---
+
+## Sesión 2 — Signals I (10 sep 2026)
+
+### Las tres piezas
+
+| | Qué es | ¿Devuelve valor? | Cuándo se ejecuta |
+|---|---|---|---|
+| `signal` | Estado fuente | Sí | Cuando tú lo escribes |
+| `computed` | Estado derivado, puro, solo lectura, cacheado | Sí | Perezoso: al leerse, si cambió alguna dependencia |
+| `effect` | Efecto hacia fuera (storage, logs, DOM) | No | Una vez al inicio + cada vez que cambia algo de lo que lee |
+
+### Escribir en un signal
+
+```ts
+this.draft.set('');                              // valor nuevo que no depende del anterior
+this.messages.update(msgs => [...msgs, nuevo]);  // valor nuevo calculado a partir del anterior
+```
+
+### Por qué `push` no sirve ⚠️ (donde patiné)
+
+El signal compara viejo y nuevo con `Object.is`. Misma referencia = "no ha cambiado" = no avisa.
+
+```ts
+this.messages().push(nuevo);               // ❌ ni pasa por set/update
+this.messages.set(this.messages());        // ❌ misma referencia → no avisa
+this.messages.update(m => [...m, nuevo]);  // ✅ array nuevo → avisa
+```
+
+Lo traicionero: la lista puede llegar a pintarse arrastrada por otro signal,
+pero los `computed` y `effect` que dependen de ella se quedan desincronizados.
+
+### Quién repinta sin Zone.js
+
+No es el `setTimeout`. Es **escribir en un signal que la plantilla lee**.
+Varias escrituras seguidas → el scheduler las agrupa en una sola pasada.
+
+### Cuándo NO usar `effect`
+
+Para derivar un signal de otro:
+
+```ts
+effect(() => this.count.set(this.messages().length));  // ❌
+count = computed(() => this.messages().length);        // ✅
+```
+
+Con `effect`: pasada extra, instante incoherente, riesgo de bucles, peor de testear.
+
+### Estilo
+
+`protected readonly` en todo lo que usa la plantilla.
+`readonly` → nadie reasigna el signal por error. `protected` → visible para la plantilla, no desde fuera.
+
+### Frase para entrevista
+
+> `computed` deriva un valor de otros signals, sin efectos secundarios. `effect` hace algo fuera
+> del sistema reactivo cuando cambian. Si hay un `set` dentro de un `effect`, casi siempre querías un `computed`.

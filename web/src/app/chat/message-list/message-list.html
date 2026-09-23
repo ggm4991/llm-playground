@@ -1,0 +1,10 @@
+  <section>
+    @for (msg of messages(); track msg.id) {
+      <app-message-item [message]="msg" (copyRequested)="copyRequested($event)"></app-message-item>
+    } @empty {
+      <p>Pega código y pide una review.</p>
+    }
+    @if (isThinking()) {
+      <p><em>Pensando…</em></p>
+    }
+  </section>

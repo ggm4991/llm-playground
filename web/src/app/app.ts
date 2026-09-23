@@ -1,11 +1,7 @@
 import { Component, computed, effect, signal } from '@angular/core';
-
-interface ChatMessage {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-}
-
+import { ChatMessage } from './chat/chat-message';
+import { ChatInput } from './chat/chat-input/chat-input';
+import { MessageList } from './chat/message-list/message-list';
 const STORAGE_KEY = 'chat-history';
 
 function loadHistory(): ChatMessage[] {
@@ -17,19 +13,16 @@ function loadHistory(): ChatMessage[] {
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
+  imports: [ChatInput, MessageList],
 })
 export class App {
   // --- Estado fuente ---
   protected readonly messages = signal<ChatMessage[]>(loadHistory());
-  protected readonly draft = signal('');
   protected readonly isThinking = signal(false);
 
   // --- Estado derivado ---
   // TODO 1: messageCount → número de mensajes
   protected readonly messageCount = computed(() => this.messages().length);
-  // TODO 2: canSend → true solo si draft (sin espacios) no está vacío Y no está pensando
-  protected readonly canSend = computed(() => this.draft().trim() !== '' && !this.isThinking());
-
   constructor() {
     // TODO 5: effect que guarde messages() en localStorage con STORAGE_KEY
     effect(() => {
@@ -41,14 +34,10 @@ export class App {
     this.messages.update((msgs) => [...msgs, { id: crypto.randomUUID(), role, content }]);
   }
 
-  protected send(): void {
-    if (!this.canSend()) return;
-
-    const text = this.draft().trim();
+  protected send(text: string): void {
     // TODO 3: añade el mensaje del usuario a messages SIN mutar el array
     this.addMessage('user', text);
 
-    this.draft.set('');
     this.isThinking.set(true);
 
     // Respuesta simulada del modelo (en S4 será HTTP real)

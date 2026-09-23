@@ -1,0 +1,4 @@
+  <footer>
+    <input #box [value]="draft()" (input)="draft.set(box.value)" (keydown.enter)="submit()" />
+    <button (click)="submit()" [disabled]="canSend()">Enviar</button>
+  </footer>

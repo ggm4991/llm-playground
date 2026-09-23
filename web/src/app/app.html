@@ -4,19 +4,6 @@
     <small>{{ messageCount() }} mensajes</small>
   </header>
 
-  <section>
-    @for (msg of messages(); track msg.id) {
-      <p><strong>{{ msg.role }}:</strong> {{ msg.content }}</p>
-    } @empty {
-      <p>Pega código y pide una review.</p>
-    }
-    @if (isThinking()) {
-      <p><em>Pensando…</em></p>
-    }
-  </section>
-
-  <footer>
-    <input #box [value]="draft()" (input)="draft.set(box.value)" (keydown.enter)="send()" />
-    <button (click)="send()" [disabled]="!canSend()">Enviar</button>
-  </footer>
+  <app-message-list [messages]="messages()" [isThinking]="isThinking()" />
+  <app-chat-input [disabled]="isThinking()" (send)="send($event)" />
 </main>

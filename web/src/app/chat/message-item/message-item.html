@@ -1,1 +1,12 @@
-<p><strong>[class.user]="isUser()"{{ message().role }}:</strong> {{ message().content }} <button (click)="onCopyClick()">Copiar</button></p>
+<p [class.user]="isUser()">
+  <strong>{{ message().role }}:</strong>
+  {{ preview() }}
+
+  <button (click)="onCopyClick()">Copiar</button>
+
+  @if (isMaxLength()) {
+    <button (click)="toggleExpanded()">
+      {{ isExpanded() ? 'Ver menos' : 'Ver más' }}
+    </button>
+  }
+</p>

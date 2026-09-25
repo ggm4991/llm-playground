@@ -10,8 +10,8 @@ export class MessageItem {
   readonly message = input.required<ChatMessage>();
   readonly maxLength = input(200);
   readonly copyRequested = output<string>();
+  readonly editRequested = output<string>();
   
-
   protected readonly isExpanded = linkedSignal({
     source: () => this.message(),
     computation: () => false,
@@ -39,5 +39,8 @@ export class MessageItem {
     this.copyRequested.emit(this.message().content);
   }
 
-  
+  protected onEditClick() {
+    this.editRequested.emit(this.message().content)
+  }
+
 }

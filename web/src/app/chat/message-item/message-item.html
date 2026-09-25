@@ -9,4 +9,11 @@
       {{ isExpanded() ? 'Ver menos' : 'Ver más' }}
     </button>
   }
+
+  @if (isUser()) {
+    <button (click)="onEditClick()">
+      Editar
+    </button>
+  }
+
 </p>

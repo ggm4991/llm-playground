@@ -4,6 +4,6 @@
     <small>{{ messageCount() }} mensajes</small>
   </header>
 
-  <app-message-list [messages]="messages()" [isThinking]="isThinking()" />
-  <app-chat-input [disabled]="isThinking()" (send)="send($event)" />
+  <app-message-list [messages]="messages()" [isThinking]="isThinking()" (editRequested)="editMessage($event)"/>
+  <app-chat-input [disabled]="isThinking()" (send)="send($event)" [(draft)]="draft" />
 </main>

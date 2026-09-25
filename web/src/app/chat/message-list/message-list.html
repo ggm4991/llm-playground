@@ -1,6 +1,9 @@
   <section>
     @for (msg of messages(); track msg.id) {
-      <app-message-item [message]="msg" (copyRequested)="copyRequested($event)"></app-message-item>
+      <app-message-item [message]="msg" 
+        (copyRequested)="onCopyRequested($event)"
+        (editRequested)="onEditRequested($event)">
+      </app-message-item>
     } @empty {
       <p>Pega código y pide una review.</p>
     }

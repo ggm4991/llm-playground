@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx tsx src/05-tools.ts",
+    "express": "npx tsx src/server.ts",
     "test": "node --import tsx --test src/__tests__/**/*.test.ts"
   },
   "keywords": [],
@@ -14,10 +15,12 @@
     "@anthropic-ai/sdk": "^0.80.0",
     "@google/genai": "^1.48.0",
     "dotenv": "^17.3.1",
+    "express": "^5.2.1",
     "groq-sdk": "^1.1.2",
     "openai": "^6.33.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.5.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
